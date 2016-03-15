@@ -3,6 +3,7 @@ package com.github.chrisbrenton.grappa.formal;
 import com.github.fge.grappa.parsers.BaseParser;
 import com.github.fge.grappa.rules.Rule;
 import com.sun.codemodel.CodeWriter;
+import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
@@ -26,8 +27,10 @@ public final class CodeModelTest
     {
         final JCodeModel model = new JCodeModel();
 
+        final JClass e = model.ref(BaseParser.class).narrow(Object.class);
+
         final JDefinedClass c = model._class("foo.bar.Baz");
-        c._extends(BaseParser.class);
+        c._extends(e);
 
         final JMethod method = c.method(JMod.PUBLIC, Rule.class, "someRule");
 
