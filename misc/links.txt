@@ -1,0 +1,10 @@
+Grammar for the Java language:
+    https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html
+
+Link to various formalisms:
+    https://en.wikipedia.org/wiki/Van_Wijngaarden_grammar
+    https://en.wikipedia.org/wiki/Attribute_grammar
+
+To research:
+    Wirth Syntax Notation
+
