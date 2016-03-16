@@ -35,7 +35,7 @@ public class BnfParser
 
     Rule stringTerminal()
     {
-        return sequence('"', stringTerminalContent(), '"');
+        return sequence('"', optional(stringTerminalContent()), '"');
     }
 
     @GenerateNode(Terminal.class)
@@ -47,7 +47,7 @@ public class BnfParser
     @GenerateNode(BnfNonTerminal.class)
     public Rule nonTerminal()
     {
-        return sequence('<', oneOrMore(alpha()), '>');
+        return sequence('<', oneOrMore(noneOf("\r\n>")), '>');
     }
 
     Rule assign()
@@ -73,7 +73,12 @@ public class BnfParser
     public Rule ruleDefinition()
     {
         return join(bnfRuleSequence())
-            .using(zeroOrMore(wsp()), '|', zeroOrMore(wsp()))
+            .using(
+                zeroOrMore(wsp()),
+                optional(nl(), zeroOrMore(wsp())),
+                '|',
+                zeroOrMore(wsp())
+            )
             .min(1);
     }
 
@@ -86,6 +91,37 @@ public class BnfParser
             assign(),
             zeroOrMore(wsp()),
             ruleDefinition()
+        );
+    }
+
+    Rule nl()
+    {
+        return sequence(optional(cr()), lf());
+    }
+
+    Rule betweenRules()
+    {
+        return sequence(
+            zeroOrMore(wsp()),
+            nl(),
+            join(zeroOrMore(wsp())).using(nl()).min(0),
+            zeroOrMore(wsp())
+        );
+    }
+
+    Rule afterGrammar()
+    {
+        return optional(betweenRules());
+    }
+
+    @GenerateNode(BnfGrammar.class)
+    public Rule grammar()
+    {
+        return sequence(
+            zeroOrMore(wsp()),
+            join(bnfRule()).using(betweenRules()).min(1),
+            afterGrammar(),
+            EOI
         );
     }
 }

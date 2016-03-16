@@ -1,6 +1,7 @@
 package com.github.chrisbrenton.grappa.formal;
 
-import com.github.chrisbrenton.grappa.parsetree.listeners.ParseNodeConstructorRepository;
+import com.github.chrisbrenton.grappa.parsetree.listeners
+    .ParseNodeConstructorRepository;
 import com.github.chrisbrenton.grappa.parsetree.listeners.ParseTreeListener;
 import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
 import com.github.fge.grappa.Grappa;
@@ -9,12 +10,19 @@ import com.github.fge.grappa.run.ListeningParseRunner;
 import com.github.fge.grappa.run.trace.TracingListener;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public final class BnfParsingTest
+public final class PostalAddressParsingTest
 {
-    private BnfParsingTest()
+    private PostalAddressParsingTest()
     {
         throw new Error("no instantiation is permitted");
     }
@@ -43,7 +51,9 @@ public final class BnfParsingTest
         runner.registerListener(parseTreeListener);
         runner.registerListener(tracingListener);
 
-        final boolean success = runner.run("<FOO> ::= 'a' 'b' | <e>")
+        final String input = postalAddress();
+
+        final boolean success = runner.run(input)
             .isSuccess();
 
         if (!success)
@@ -56,5 +66,34 @@ public final class BnfParsingTest
         ) {
             generator.render(node);
         }
+    }
+
+    private static String postalAddress()
+        throws IOException
+    {
+        final URL url = PostalAddressParsingTest.class.getResource(
+            "/postalAddress.bnf");
+
+        if (url == null)
+            throw new IOException("unable to load example file");
+
+        final StringBuilder sb = new StringBuilder();
+
+        final CharsetDecoder decoder = StandardCharsets.UTF_8.newDecoder()
+            .onUnmappableCharacter(CodingErrorAction.REPORT)
+            .onMalformedInput(CodingErrorAction.REPORT);
+
+        try (
+            final InputStream in = url.openStream();
+            final Reader reader = new InputStreamReader(in, decoder);
+        ) {
+            final char[] buf = new char[2048];
+            int nrChars;
+
+            while ((nrChars = reader.read(buf)) != -1)
+                sb.append(buf, 0, nrChars);
+        }
+
+        return sb.toString();
     }
 }
