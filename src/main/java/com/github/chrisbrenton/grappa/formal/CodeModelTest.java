@@ -3,6 +3,7 @@ package com.github.chrisbrenton.grappa.formal;
 import com.github.fge.grappa.parsers.BaseParser;
 import com.github.fge.grappa.rules.Rule;
 import com.sun.codemodel.CodeWriter;
+import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
@@ -34,7 +35,8 @@ public final class CodeModelTest
 
         final JMethod method = c.method(JMod.PUBLIC, Rule.class, "someRule");
 
-        method.body()._return(JExpr._null());
+        final JBlock body = method.body();
+        body._return(JExpr.invoke("foo").arg("x").arg(JExpr.invoke("bar")));
 
         final CodeWriter cw = new OutputStreamCodeWriter(System.out,
             StandardCharsets.UTF_8.displayName());
