@@ -43,7 +43,8 @@ public final class BnfParsingTest
         runner.registerListener(parseTreeListener);
         runner.registerListener(tracingListener);
 
-        final boolean success = runner.run("<FOO> ::= 'e' | <e>").isSuccess();
+        final boolean success = runner.run("<FOO> ::= 'a' 'b' | <e>")
+            .isSuccess();
 
         if (!success)
             System.exit(2);

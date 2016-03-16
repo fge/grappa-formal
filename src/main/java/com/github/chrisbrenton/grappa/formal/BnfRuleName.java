@@ -4,10 +4,10 @@ import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
 
 import java.util.List;
 
-public final class BnfRuleNode
+public final class BnfRuleName
     extends ParseNode
 {
-    public BnfRuleNode(final String value, final List<ParseNode> children)
+    public BnfRuleName(final String value, final List<ParseNode> children)
     {
         super(value, children);
     }
@@ -15,6 +15,6 @@ public final class BnfRuleNode
     @Override
     public String toString()
     {
-        return "Rule";
+        return getValue();
     }
 }

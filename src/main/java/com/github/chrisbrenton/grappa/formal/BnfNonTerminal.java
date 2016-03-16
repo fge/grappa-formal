@@ -4,10 +4,10 @@ import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
 
 import java.util.List;
 
-public final class TerminalNode
+public final class BnfNonTerminal
     extends ParseNode
 {
-    public TerminalNode(final String value, final List<ParseNode> children)
+    public BnfNonTerminal(final String value, final List<ParseNode> children)
     {
         super(value, children);
     }

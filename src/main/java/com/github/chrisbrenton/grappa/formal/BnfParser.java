@@ -38,13 +38,13 @@ public class BnfParser
         return sequence('"', stringTerminalContent(), '"');
     }
 
-    @GenerateNode(TerminalNode.class)
+    @GenerateNode(Terminal.class)
     public Rule terminal()
     {
         return firstOf(charTerminal(), stringTerminal());
     }
 
-    @GenerateNode(NonTerminalNode.class)
+    @GenerateNode(BnfNonTerminal.class)
     public Rule nonTerminal()
     {
         return sequence('<', oneOrMore(alpha()), '>');
@@ -55,22 +55,37 @@ public class BnfParser
         return string("::=");
     }
 
-    Rule bnfRuleRhs()
+    @GenerateNode(BnfSequence.class)
+    public Rule bnfRuleSequence()
     {
         return join(firstOf(terminal(), nonTerminal()))
+            .using(oneOrMore(wsp()))
+            .min(1);
+    }
+
+    @GenerateNode(BnfRuleName.class)
+    public Rule ruleName()
+    {
+        return nonTerminal();
+    }
+
+    @GenerateNode(BnfRuleDefinition.class)
+    public Rule ruleDefinition()
+    {
+        return join(bnfRuleSequence())
             .using(zeroOrMore(wsp()), '|', zeroOrMore(wsp()))
             .min(1);
     }
 
-    @GenerateNode(BnfRuleNode.class)
+    @GenerateNode(BnfRule.class)
     public Rule bnfRule()
     {
         return sequence(
-            nonTerminal(),
+            ruleName(),
             zeroOrMore(wsp()),
             assign(),
             zeroOrMore(wsp()),
-            bnfRuleRhs()
+            ruleDefinition()
         );
     }
 }

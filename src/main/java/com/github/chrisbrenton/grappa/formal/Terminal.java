@@ -4,10 +4,10 @@ import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
 
 import java.util.List;
 
-public final class NonTerminalNode
+public final class Terminal
     extends ParseNode
 {
-    public NonTerminalNode(final String value, final List<ParseNode> children)
+    public Terminal(final String value, final List<ParseNode> children)
     {
         super(value, children);
     }
