@@ -16,10 +16,12 @@ targetCompatibility = javaVersion; // defaults to sourceCompatibility
 repositories {
     mavenCentral();
     jcenter();
+    mavenLocal();
 }
 
 dependencies {
-    compile(group: "com.github.fge", name: "grappa", version: "[2.0.4,)");
+    compile(group: "com.github.fge", name: "grappa-parsetree-visual",
+            version: "[1.0.0,)");
     compile(group: "com.unquietcode.tools.jcodemodel", name: "codemodel",
         version: "1.0.3");
     testCompile(group: "org.testng", name: "testng", version: "6.9.10") {

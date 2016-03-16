@@ -1,0 +1,59 @@
+package com.github.chrisbrenton.grappa.formal;
+
+import com.github.chrisbrenton.grappa.parsetree.listeners.ParseNodeConstructorRepository;
+import com.github.chrisbrenton.grappa.parsetree.listeners.ParseTreeListener;
+import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
+import com.github.fge.grappa.Grappa;
+import com.github.fge.grappa.parsetree.visual.DotFileGenerator;
+import com.github.fge.grappa.run.ListeningParseRunner;
+import com.github.fge.grappa.run.trace.TracingListener;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public final class BnfParsingTest
+{
+    private BnfParsingTest()
+    {
+        throw new Error("no instantiation is permitted");
+    }
+
+    public static void main(final String... args)
+        throws IOException, InterruptedException
+    {
+        final Path outfile = Paths.get("bnfTest.svg");
+        final Path traceFile = Paths.get("trace.zip");
+
+        final Class<BnfParser> parserClass = BnfParser.class;
+
+        final ParseNodeConstructorRepository repository
+            = new ParseNodeConstructorRepository(parserClass);
+
+        final BnfParser parser = Grappa.createParser(parserClass);
+
+        final ListeningParseRunner<Void> runner
+            = new ListeningParseRunner<>(parser.bnfRule());
+
+        final ParseTreeListener<Void> parseTreeListener
+            = new ParseTreeListener<>(repository);
+        final TracingListener<Void> tracingListener
+            = new TracingListener<>(traceFile, true);
+
+        runner.registerListener(parseTreeListener);
+        runner.registerListener(tracingListener);
+
+        final boolean success = runner.run("<FOO> ::= 'e' | <e>").isSuccess();
+
+        if (!success)
+            System.exit(2);
+
+        final ParseNode node = parseTreeListener.getRootNode();
+
+        try (
+            final DotFileGenerator generator = new DotFileGenerator(outfile);
+        ) {
+            generator.render(node);
+        }
+    }
+}
