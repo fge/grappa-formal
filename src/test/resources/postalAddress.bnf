@@ -10,5 +10,4 @@
        <zip-part> ::= <town-name> "," <state-code> <ZIP-code> <EOL>
 
 <opt-suffix-part> ::= "Sr." | "Jr." | <roman-numeral> | ""
-    <opt-apt-num> ::= <apt-num> | ""
-
+<opt-apt-num> ::= <apt-num>

@@ -14,7 +14,7 @@ public final class BnfRule
 
     public String getName()
     {
-        return getChildren().get(0).toString();
+        return getChildren().get(0).getValue();
     }
 
     public BnfRuleDefinition getDefinition()
