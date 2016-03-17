@@ -52,7 +52,8 @@ public final class BnfParsingTest
         final ParseNode node = parseTreeListener.getRootNode();
 
         try (
-            final DotFileGenerator generator = new DotFileGenerator(outfile);
+            final DotFileGenerator generator
+                = new DotFileGenerator(outfile, ParseNode::getValue);
         ) {
             generator.render(node);
         }

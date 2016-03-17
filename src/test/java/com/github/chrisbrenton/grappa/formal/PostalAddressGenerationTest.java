@@ -1,5 +1,6 @@
 package com.github.chrisbrenton.grappa.formal;
 
+import com.github.chrisbrenton.grappa.formal.nodes.BnfGrammar;
 import com.github.chrisbrenton.grappa.parsetree.listeners
     .ParseNodeConstructorRepository;
 import com.github.chrisbrenton.grappa.parsetree.listeners.ParseTreeListener;

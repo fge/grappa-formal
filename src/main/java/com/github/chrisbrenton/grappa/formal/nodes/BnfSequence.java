@@ -1,5 +1,7 @@
-package com.github.chrisbrenton.grappa.formal;
+package com.github.chrisbrenton.grappa.formal.nodes;
 
+import com.github.chrisbrenton.grappa.formal.ExpressionGenerator;
+import com.github.chrisbrenton.grappa.formal.RuleNameMangler;
 import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
@@ -57,7 +59,7 @@ public final class BnfSequence
     }
 
     @Override
-    public String toString()
+    public String getValue()
     {
         return "Sequence";
     }

@@ -1,5 +1,7 @@
 package com.github.chrisbrenton.grappa.formal;
 
+import com.github.chrisbrenton.grappa.formal.nodes.BnfGrammar;
+import com.github.chrisbrenton.grappa.formal.nodes.BnfRule;
 import com.github.fge.grappa.annotations.Label;
 import com.github.fge.grappa.parsers.BaseParser;
 import com.github.fge.grappa.rules.Rule;

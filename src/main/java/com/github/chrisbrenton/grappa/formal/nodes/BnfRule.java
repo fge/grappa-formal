@@ -1,4 +1,4 @@
-package com.github.chrisbrenton.grappa.formal;
+package com.github.chrisbrenton.grappa.formal.nodes;
 
 import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
 
@@ -23,7 +23,7 @@ public final class BnfRule
     }
 
     @Override
-    public String toString()
+    public String getValue()
     {
         return "Rule";
     }
