@@ -33,7 +33,7 @@ public final class BnfRuleDefinition
 
         final JInvocation invocation = JExpr.invoke("firstOf");
 
-        sequences.stream().map(generator -> generator.toInvocation(mangler))
+        sequences.stream().map(generator -> generator.toExpression(mangler))
             .forEach(invocation::arg);
 
         return invocation;
