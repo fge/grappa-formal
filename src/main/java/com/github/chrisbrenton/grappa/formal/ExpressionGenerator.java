@@ -6,10 +6,10 @@ import com.sun.codemodel.JInvocation;
 @FunctionalInterface
 public interface ExpressionGenerator
 {
-    default JExpression toExpression()
+    default JExpression toExpression(RuleNameMangler mangler)
     {
-        return toInvocation();
+        return toInvocation(mangler);
     }
 
-    JInvocation toInvocation();
+    JInvocation toInvocation(RuleNameMangler mangler);
 }

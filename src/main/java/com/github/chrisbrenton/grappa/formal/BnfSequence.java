@@ -24,16 +24,16 @@ public final class BnfSequence
     }
 
     @Override
-    public JInvocation toInvocation()
+    public JInvocation toInvocation(final RuleNameMangler mangler)
     {
         final List<ExpressionGenerator> elements = getElements();
 
         if (elements.size() == 1)
-            return elements.get(0).toInvocation();
+            return elements.get(0).toInvocation(mangler);
 
         final JInvocation sequence = JExpr.invoke("sequence");
 
-        elements.stream().map(ExpressionGenerator::toExpression)
+        elements.stream().map(generator -> generator.toExpression(mangler))
             .forEach(sequence::arg);
 
         return sequence;

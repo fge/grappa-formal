@@ -17,18 +17,78 @@ public final class BnfTerminal
     }
 
     @Override
-    public JExpression toExpression()
+    public JExpression toExpression(final RuleNameMangler mangler)
     {
-        return JExpr.lit(getValue());
+        return matchedText.startsWith("'")
+            ? JExpr.lit(unquoteChar(matchedText))
+            : JExpr.lit(unquoteString(matchedText));
     }
 
     @Override
-    public JInvocation toInvocation()
+    public JInvocation toInvocation(final RuleNameMangler mangler)
     {
-        final String value = getValue();
-        return value.startsWith("'")
-            ? JExpr.invoke("ch").arg(value)
-            : JExpr.invoke("string").arg(value);
+        return matchedText.startsWith("'")
+            ? JExpr.invoke("ch").arg(JExpr.lit(unquoteChar(matchedText)))
+            : JExpr.invoke("string").arg(JExpr.lit(unquoteString(matchedText)));
+    }
+
+    // Note: very dependent on the parsing
+    private static char unquoteChar(final String input)
+    {
+        char c = input.charAt(1);
+
+        if (input.length() == 3)
+            return c;
+
+        c = input.charAt(2);
+
+        switch (c) {
+            case 'r':
+                return '\r';
+            case 'n':
+                return '\n';
+            case '\'':
+            case '\\':
+                return c;
+        }
+
+        throw new IllegalStateException();
+    }
+
+    private static String unquoteString(final String input)
+    {
+        final int len = input.length() - 1;
+        final StringBuilder sb = new StringBuilder(len - 1);
+
+        boolean inBackslash = false;
+        char c;
+
+        for (int index = 1; index < len; index++) {
+            c = input.charAt(index);
+            if (!inBackslash) {
+                if (c == '\\')
+                    inBackslash = true;
+                else
+                    sb.append(c);
+                continue;
+            }
+            switch (c) {
+                case 'r':
+                    sb.append('\r');
+                    break;
+                case 'n':
+                    sb.append('\n');
+                    break;
+                case '"':
+                case '\\':
+                    sb.append(c);
+                    break;
+                default:
+                    throw new IllegalStateException();
+            }
+        }
+
+        return sb.toString();
     }
 
     @Override

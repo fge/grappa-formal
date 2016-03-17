@@ -24,16 +24,16 @@ public final class BnfRuleDefinition
     }
 
     @Override
-    public JInvocation toInvocation()
+    public JInvocation toInvocation(final RuleNameMangler mangler)
     {
         final List<BnfSequence> sequences = getSequences();
 
         if (sequences.size() == 1)
-            return sequences.get(0).toInvocation();
+            return sequences.get(0).toInvocation(mangler);
 
         final JInvocation invocation = JExpr.invoke("firstOf");
 
-        sequences.stream().map(ExpressionGenerator::toExpression)
+        sequences.stream().map(generator -> generator.toInvocation(mangler))
             .forEach(invocation::arg);
 
         return invocation;

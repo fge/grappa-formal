@@ -11,13 +11,12 @@ import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JMethod;
 import com.sun.codemodel.JMod;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public final class BnfGenerator
 {
-    private final AtomicInteger ruleCount = new AtomicInteger();
     private final JCodeModel model = new JCodeModel();
     private final JDefinedClass definedClass;
+
+    private final RuleNameMangler mangler = new BnfRuleNameMangler();
 
     public BnfGenerator()
     {
@@ -40,14 +39,14 @@ public final class BnfGenerator
     private void addRule(final BnfRule rule)
     {
         final String label = rule.getName();
-        final String methodName = "rule" + ruleCount.getAndIncrement();
+        final String methodName = mangler.fromRuleName(rule.getName());
 
         final JMethod method = definedClass.method(JMod.PUBLIC, Rule.class,
             methodName);
         // The generated code automatically collapses "value" if it's the only
         // parameter of the annotation
         method.annotate(Label.class).param("value", label);
-        method.body()._return(rule.getDefinition().toExpression());
+        method.body()._return(rule.getDefinition().toExpression(mangler));
     }
 
     public JCodeModel getModel()

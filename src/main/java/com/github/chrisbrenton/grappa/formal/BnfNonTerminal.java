@@ -2,7 +2,6 @@ package com.github.chrisbrenton.grappa.formal;
 
 import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
 import com.sun.codemodel.JExpr;
-import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JInvocation;
 
 import java.util.List;
@@ -17,20 +16,8 @@ public final class BnfNonTerminal
     }
 
     @Override
-    public JExpression toExpression()
+    public JInvocation toInvocation(final RuleNameMangler mangler)
     {
-        return JExpr.invoke(getValue());
-    }
-
-    @Override
-    public JInvocation toInvocation()
-    {
-        return JExpr.invoke(getValue());
-    }
-
-    @Override
-    public String toString()
-    {
-        return getValue();
+        return JExpr.invoke(mangler.fromRuleName(getValue()));
     }
 }

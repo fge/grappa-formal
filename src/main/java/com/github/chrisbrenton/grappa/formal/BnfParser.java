@@ -9,12 +9,12 @@ public class BnfParser
 {
     Rule nonQuotedTerminalChar()
     {
-        return noneOf("\r\n'");
+        return noneOf("\r\n'\\");
     }
 
     Rule quotedTerminalChar()
     {
-        return sequence('\\', anyOf("rn'"));
+        return sequence('\\', anyOf("rn'\\"));
     }
 
     Rule charTerminal()
@@ -28,8 +28,8 @@ public class BnfParser
 
     Rule stringTerminalContent()
     {
-        return join(oneOrMore(noneOf("\r\n\"")))
-            .using('\\', anyOf("rn\""))
+        return join(oneOrMore(noneOf("\r\n\"\\")))
+            .using('\\', anyOf("rn\"\\"))
             .min(1);
     }
 
