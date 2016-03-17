@@ -12,6 +12,16 @@ public final class BnfRule
         super(value, children);
     }
 
+    public String getName()
+    {
+        return getChildren().get(0).toString();
+    }
+
+    public BnfRuleDefinition getDefinition()
+    {
+        return BnfRuleDefinition.class.cast(getChildren().get(1));
+    }
+
     @Override
     public String toString()
     {

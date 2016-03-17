@@ -38,7 +38,7 @@ public class BnfParser
         return sequence('"', optional(stringTerminalContent()), '"');
     }
 
-    @GenerateNode(Terminal.class)
+    @GenerateNode(BnfTerminal.class)
     public Rule terminal()
     {
         return firstOf(charTerminal(), stringTerminal());

@@ -7,11 +7,11 @@ import com.sun.codemodel.JInvocation;
 
 import java.util.List;
 
-public final class BnfNonTerminal
+public final class BnfTerminal
     extends ParseNode
     implements ExpressionGenerator
 {
-    public BnfNonTerminal(final String value, final List<ParseNode> children)
+    public BnfTerminal(final String value, final List<ParseNode> children)
     {
         super(value, children);
     }
@@ -19,13 +19,16 @@ public final class BnfNonTerminal
     @Override
     public JExpression toExpression()
     {
-        return JExpr.invoke(getValue());
+        return JExpr.lit(getValue());
     }
 
     @Override
     public JInvocation toInvocation()
     {
-        return JExpr.invoke(getValue());
+        final String value = getValue();
+        return value.startsWith("'")
+            ? JExpr.invoke("ch").arg(value)
+            : JExpr.invoke("string").arg(value);
     }
 
     @Override

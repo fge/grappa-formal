@@ -1,5 +1,6 @@
 package com.github.chrisbrenton.grappa.formal;
 
+import com.github.fge.grappa.annotations.Label;
 import com.github.fge.grappa.parsers.BaseParser;
 import com.github.fge.grappa.rules.Rule;
 import com.sun.codemodel.CodeWriter;
@@ -35,6 +36,7 @@ public final class CodeModelTest
 
         final JMethod method = c.method(JMod.PUBLIC, Rule.class, "someRule");
 
+        method.annotate(Label.class).param("value", "meh");
         final JBlock body = method.body();
         body._return(JExpr.invoke("foo").arg("x").arg(JExpr.invoke("bar")));
 
