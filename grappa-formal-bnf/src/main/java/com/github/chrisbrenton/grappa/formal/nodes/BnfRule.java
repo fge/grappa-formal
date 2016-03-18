@@ -6,20 +6,23 @@ import java.util.List;
 
 public final class BnfRule
     extends ParseNode
+    implements FormalRule
 {
     public BnfRule(final String value, final List<ParseNode> children)
     {
         super(value, children);
     }
 
+    @Override
     public String getName()
     {
         return getChildren().get(0).getValue();
     }
 
-    public BnfRuleDefinition getDefinition()
+    @Override
+    public BnfProductionRule getProductionRule()
     {
-        return BnfRuleDefinition.class.cast(getChildren().get(1));
+        return BnfProductionRule.class.cast(getChildren().get(1));
     }
 
     @Override

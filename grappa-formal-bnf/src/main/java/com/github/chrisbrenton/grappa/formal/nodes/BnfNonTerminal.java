@@ -10,7 +10,7 @@ import java.util.List;
 
 public final class BnfNonTerminal
     extends ParseNode
-    implements ExpressionGenerator
+    implements ExpressionGenerator, AlternationElement
 {
     public BnfNonTerminal(final String value, final List<ParseNode> children)
     {
@@ -21,5 +21,11 @@ public final class BnfNonTerminal
     public JInvocation toInvocation(final RuleNameMangler mangler)
     {
         return JExpr.invoke(mangler.fromRuleName(getValue()));
+    }
+
+    @Override
+    public boolean isTerminal()
+    {
+        return false;
     }
 }

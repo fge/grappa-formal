@@ -11,7 +11,7 @@ import java.util.List;
 
 public final class BnfTerminal
     extends ParseNode
-    implements ExpressionGenerator
+    implements ExpressionGenerator, AlternationElement
 {
     public BnfTerminal(final String value, final List<ParseNode> children)
     {
@@ -32,6 +32,12 @@ public final class BnfTerminal
         return matchedText.startsWith("'")
             ? JExpr.invoke("ch").arg(JExpr.lit(unquoteChar(matchedText)))
             : JExpr.invoke("string").arg(JExpr.lit(unquoteString(matchedText)));
+    }
+
+    @Override
+    public boolean isTerminal()
+    {
+        return true;
     }
 
     // Note: very dependent on the parsing

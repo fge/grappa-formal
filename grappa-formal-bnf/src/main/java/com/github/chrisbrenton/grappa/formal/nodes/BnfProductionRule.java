@@ -9,11 +9,11 @@ import com.sun.codemodel.JInvocation;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class BnfRuleDefinition
+public final class BnfProductionRule
     extends ParseNode
-    implements ExpressionGenerator
+    implements ExpressionGenerator, ProductionRule
 {
-    public BnfRuleDefinition(final String value, final List<ParseNode> children)
+    public BnfProductionRule(final String value, final List<ParseNode> children)
     {
         super(value, children);
     }
@@ -22,6 +22,14 @@ public final class BnfRuleDefinition
     {
         return getChildren().stream()
             .map(BnfSequence.class::cast)
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Alternation> getAlternations()
+    {
+        return getChildren().stream()
+            .map(Alternation.class::cast)
             .collect(Collectors.toList());
     }
 

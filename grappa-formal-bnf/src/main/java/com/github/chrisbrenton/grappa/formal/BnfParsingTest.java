@@ -1,8 +1,12 @@
 package com.github.chrisbrenton.grappa.formal;
 
+import com.github.chrisbrenton.grappa.formal.exceptions.FormalismException;
+import com.github.chrisbrenton.grappa.formal.validate.FormalGrammarValidator;
+import com.github.chrisbrenton.grappa.formal.validate.LeftRecursionValidator;
 import com.github.chrisbrenton.grappa.parsetree.listeners.ParseNodeConstructorRepository;
 import com.github.chrisbrenton.grappa.parsetree.listeners.ParseTreeListener;
 import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
+import com.github.chrisbrenton.grappa.parsetree.visitors.VisitorRunner;
 import com.github.fge.grappa.Grappa;
 import com.github.fge.grappa.parsetree.visual.DotFileGenerator;
 import com.github.fge.grappa.run.ListeningParseRunner;
@@ -20,7 +24,7 @@ public final class BnfParsingTest
     }
 
     public static void main(final String... args)
-        throws IOException, InterruptedException
+        throws IOException, InterruptedException, FormalismException
     {
         final Path outfile = Paths.get("bnfTest.svg");
         final Path traceFile = Paths.get("trace.zip");
@@ -43,13 +47,22 @@ public final class BnfParsingTest
         runner.registerListener(parseTreeListener);
         runner.registerListener(tracingListener);
 
-        final boolean success = runner.run("<FOO> ::= 'a' 'b' | <e>")
+        final boolean success = runner.run("<FOO> ::= <FOO> 'a' 'b' | <e>")
             .isSuccess();
 
         if (!success)
             System.exit(2);
 
         final ParseNode node = parseTreeListener.getRootNode();
+
+        final VisitorRunner visitorRunner = new VisitorRunner(node);
+
+        final FormalGrammarValidator validator = new LeftRecursionValidator();
+
+        visitorRunner.registerVisitor(validator);
+        visitorRunner.run();
+
+        validator.validate();
 
         try (
             final DotFileGenerator generator

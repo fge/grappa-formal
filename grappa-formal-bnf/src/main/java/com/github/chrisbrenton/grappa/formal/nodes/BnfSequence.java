@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
 
 public final class BnfSequence
     extends ParseNode
-    implements ExpressionGenerator
+    implements ExpressionGenerator, Alternation
 {
     public BnfSequence(final String value, final List<ParseNode> children)
     {
         super(value, children);
     }
 
-    public List<ExpressionGenerator> getElements()
+    public List<ExpressionGenerator> getGenerators()
     {
         return getChildren().stream()
             .map(ExpressionGenerator.class::cast)
@@ -27,9 +27,17 @@ public final class BnfSequence
     }
 
     @Override
+    public List<AlternationElement> getElements()
+    {
+        return getChildren().stream()
+            .map(AlternationElement.class::cast)
+            .collect(Collectors.toList());
+    }
+
+    @Override
     public JExpression toExpression(final RuleNameMangler mangler)
     {
-        final List<ExpressionGenerator> elements = getElements();
+        final List<ExpressionGenerator> elements = getGenerators();
 
         if (elements.size() == 1)
             return elements.get(0).toExpression(mangler);
@@ -45,7 +53,7 @@ public final class BnfSequence
     @Override
     public JInvocation toInvocation(final RuleNameMangler mangler)
     {
-        final List<ExpressionGenerator> elements = getElements();
+        final List<ExpressionGenerator> elements = getGenerators();
 
         if (elements.size() == 1)
             return elements.get(0).toInvocation(mangler);

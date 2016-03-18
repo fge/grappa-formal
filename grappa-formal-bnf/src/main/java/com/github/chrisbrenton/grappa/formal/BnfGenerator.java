@@ -48,7 +48,7 @@ public final class BnfGenerator
         // The generated code automatically collapses "value" if it's the only
         // parameter of the annotation
         method.annotate(Label.class).param("value", label);
-        method.body()._return(rule.getDefinition().toExpression(mangler));
+        method.body()._return(rule.getProductionRule().toExpression(mangler));
     }
 
     public JCodeModel getModel()
