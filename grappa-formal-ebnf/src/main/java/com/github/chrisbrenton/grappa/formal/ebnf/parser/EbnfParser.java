@@ -80,6 +80,17 @@ public class EbnfParser
         );
     }
 
+    public Rule grouping()
+    {
+        return sequence(
+            '(',
+            zeroOrMore(wsp()),
+            ruleBody(),
+            zeroOrMore(wsp()),
+            ')'
+        );
+    }
+
     @GenerateNode(EbnfAlternation.class)
     public Rule alternation()
     {
@@ -119,7 +130,8 @@ public class EbnfParser
             literal(),
             nonTerminal(),
             repetition(),
-            optionalMember()
+            optionalMember(),
+            grouping()
         );
     }
 
