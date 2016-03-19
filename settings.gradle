@@ -1,2 +1,3 @@
 include "grappa-formal-core";
+include "grappa-formal-ebnf";
 include "grappa-formal-bnf";
