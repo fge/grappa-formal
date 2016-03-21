@@ -1,14 +1,14 @@
 package com.github.chrisbrenton.grappa.formal.compile;
 
 import com.github.chrisbrenton.grappa.formal.FormalGrammarParser;
-import com.github.fge.grappa.Grappa;
 import com.github.fge.grappa.parsers.BaseParser;
 import com.github.fge.grappa.rules.Rule;
+import com.github.fge.grappa.run.ParseRunner;
+import com.github.fge.grappa.transform.ParserFactory;
 import com.google.common.collect.ImmutableList;
 import com.sun.codemodel.CodeWriter;
 import com.sun.codemodel.JBlock;
 import com.sun.codemodel.JClass;
-import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
 import com.sun.codemodel.JDefinedClass;
 import com.sun.codemodel.JExpr;
@@ -21,9 +21,7 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.StringWriter;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.StandardCharsets;
@@ -38,8 +36,7 @@ public final class CompileTest
         = ToolProvider.getSystemJavaCompiler();
 
     public static void main(final String... args)
-        throws JClassAlreadyExistsException, IOException, URISyntaxException,
-        ClassNotFoundException
+        throws Exception
     {
         /*
          * First, generate some code of a _valid_ parser
@@ -99,7 +96,17 @@ public final class CompileTest
         final Class<? extends FormalGrammarParser> compiled
             = (Class<? extends FormalGrammarParser>) cl.loadClass(fqdn);
 
+        ParserFactory factory = ParserFactory.newBuilder()
+            .addClassLoader(cl)
+            .build();
+
+        final FormalGrammarParser parser = factory.getParser(compiled);
+
+        final ParseRunner<Object> runner
+            = new ParseRunner<>(parser.entryPoint());
+
+        System.out.println(runner.run("xxx").isSuccess());
         // Fails here; that was unfortunately expected.
-        Grappa.createParser(compiled);
+        //Grappa.createParser(compiled);
     }
 }
