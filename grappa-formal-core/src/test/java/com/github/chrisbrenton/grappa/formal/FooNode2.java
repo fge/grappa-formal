@@ -1,6 +1,8 @@
 package com.github.chrisbrenton.grappa.formal;
 
-import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
+
+import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
+import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 
 import java.util.List;
 
@@ -8,8 +10,9 @@ import java.util.List;
 public final class FooNode2
     extends ParseNode
 {
-    public FooNode2(final String matchedText, final List<ParseNode> children)
+    public FooNode2(final MatchTextSupplier supplier,
+        final List<ParseNode> children)
     {
-        super(matchedText, children);
+        super(supplier, children);
     }
 }
