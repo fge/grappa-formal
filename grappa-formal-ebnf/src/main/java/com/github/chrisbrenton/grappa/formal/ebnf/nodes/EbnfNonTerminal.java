@@ -1,7 +1,8 @@
 package com.github.chrisbrenton.grappa.formal.ebnf.nodes;
 
 import com.github.chrisbrenton.grappa.formal.nodes.AlternationElement;
-import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
+import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
+import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 
 import java.util.List;
 
@@ -9,10 +10,10 @@ public final class EbnfNonTerminal
     extends ParseNode
     implements AlternationElement
 {
-    public EbnfNonTerminal(final String matchedText,
+    public EbnfNonTerminal(final MatchTextSupplier supplier,
         final List<ParseNode> children)
     {
-        super(matchedText, children);
+        super(supplier, children);
     }
 
     @Override

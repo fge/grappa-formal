@@ -3,13 +3,14 @@ package com.github.chrisbrenton.grappa.formal;
 import com.github.chrisbrenton.grappa.formal.exceptions.FormalismException;
 import com.github.chrisbrenton.grappa.formal.validate.FormalGrammarValidator;
 import com.github.chrisbrenton.grappa.formal.validate.LeftRecursionValidator;
-import com.github.chrisbrenton.grappa.parsetree.listeners.ParseNodeConstructorRepository;
-import com.github.chrisbrenton.grappa.parsetree.listeners.ParseTreeListener;
-import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
-import com.github.chrisbrenton.grappa.parsetree.visitors.VisitorRunner;
+import com.github.chrisbrenton.grappa.parsetree.build
+    .ParseNodeConstructorProvider;
+import com.github.chrisbrenton.grappa.parsetree.build.ParseTreeBuilder;
+import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
+import com.github.chrisbrenton.grappa.parsetree.visit.VisitorRunner;
 import com.github.fge.grappa.Grappa;
 import com.github.fge.grappa.parsetree.visual.DotFileGenerator;
-import com.github.fge.grappa.run.ListeningParseRunner;
+import com.github.fge.grappa.run.ParseRunner;
 import com.github.fge.grappa.run.trace.TracingListener;
 
 import java.io.IOException;
@@ -31,29 +32,29 @@ public final class BnfParsingTest
 
         final Class<BnfParser> parserClass = BnfParser.class;
 
-        final ParseNodeConstructorRepository repository
-            = new ParseNodeConstructorRepository(parserClass);
+        final ParseNodeConstructorProvider provider
+            = new ParseNodeConstructorProvider(parserClass);
 
         final BnfParser parser = Grappa.createParser(parserClass);
 
-        final ListeningParseRunner<Void> runner
-            = new ListeningParseRunner<>(parser.grammar());
+        final ParseRunner<Void> runner
+            = new ParseRunner<>(parser.grammar());
 
-        final ParseTreeListener<Void> parseTreeListener
-            = new ParseTreeListener<>(repository);
+        final ParseTreeBuilder<Void> parseTreeListener
+            = new ParseTreeBuilder<>(provider);
         final TracingListener<Void> tracingListener
             = new TracingListener<>(traceFile, true);
 
         runner.registerListener(parseTreeListener);
         runner.registerListener(tracingListener);
 
-        final boolean success = runner.run("<FOO> ::= <FOO> 'a' 'b' | <e>")
+        final boolean success = runner.run("<FOO> ::= 'a' 'b' | <e>")
             .isSuccess();
 
         if (!success)
             System.exit(2);
 
-        final ParseNode node = parseTreeListener.getRootNode();
+        final ParseNode node = parseTreeListener.getTree();
 
         final VisitorRunner visitorRunner = new VisitorRunner(node);
 
@@ -66,7 +67,7 @@ public final class BnfParsingTest
 
         try (
             final DotFileGenerator generator
-                = new DotFileGenerator(outfile, ParseNode::getValue);
+                = new DotFileGenerator(outfile, ParseNode::toString);
         ) {
             generator.render(node);
         }

@@ -2,12 +2,12 @@ package com.github.chrisbrenton.grappa.formal;
 
 import com.github.chrisbrenton.grappa.formal.nodes.BnfGrammar;
 import com.github.chrisbrenton.grappa.formal.nodes.BnfNonTerminal;
-import com.github.chrisbrenton.grappa.formal.nodes.BnfRule;
 import com.github.chrisbrenton.grappa.formal.nodes.BnfProductionRule;
+import com.github.chrisbrenton.grappa.formal.nodes.BnfRule;
 import com.github.chrisbrenton.grappa.formal.nodes.BnfRuleName;
 import com.github.chrisbrenton.grappa.formal.nodes.BnfSequence;
 import com.github.chrisbrenton.grappa.formal.nodes.BnfTerminal;
-import com.github.chrisbrenton.grappa.parsetree.annotations.GenerateNode;
+import com.github.chrisbrenton.grappa.parsetree.node.GenerateNode;
 import com.github.fge.grappa.parsers.BaseParser;
 import com.github.fge.grappa.rules.Rule;
 

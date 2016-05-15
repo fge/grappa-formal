@@ -6,13 +6,12 @@ import com.github.chrisbrenton.grappa.formal.nodes.AlternationElement;
 import com.github.chrisbrenton.grappa.formal.nodes.FormalGrammar;
 import com.github.chrisbrenton.grappa.formal.nodes.FormalRule;
 import com.github.chrisbrenton.grappa.formal.nodes.ProductionRule;
-import com.github.chrisbrenton.grappa.parsetree.listeners
-    .ParseNodeConstructorRepository;
-import com.github.chrisbrenton.grappa.parsetree.listeners.ParseTreeListener;
-import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
+import com.github.chrisbrenton.grappa.parsetree.build.ParseNodeConstructorProvider;
+import com.github.chrisbrenton.grappa.parsetree.build.ParseTreeBuilder;
+import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 import com.github.fge.grappa.Grappa;
 import com.github.fge.grappa.parsetree.visual.DotFileGenerator;
-import com.github.fge.grappa.run.ListeningParseRunner;
+import com.github.fge.grappa.run.ParseRunner;
 import com.github.fge.grappa.run.trace.TracingListener;
 
 import java.io.IOException;
@@ -38,18 +37,17 @@ public final class Example
         throws IOException, InterruptedException
     {
         final Class<EbnfParser> c = EbnfParser.class;
-        final ParseNodeConstructorRepository repository
-            = new ParseNodeConstructorRepository(c);
+        final ParseNodeConstructorProvider provider
+            = new ParseNodeConstructorProvider(c);
 
-        final ParseTreeListener<Object> listener
-            = new ParseTreeListener<>(repository);
+        final ParseTreeBuilder<Object> listener
+            = new ParseTreeBuilder<>(provider);
 
         final EbnfParser parser = Grappa.createParser(c);
 
         final String input = loadExample();
 
-        final ListeningParseRunner<Object> runner
-            = new ListeningParseRunner<>(parser.grammar());
+        final ParseRunner<Object> runner = new ParseRunner<>(parser.grammar());
 
         runner.registerListener(listener);
 
@@ -64,7 +62,7 @@ public final class Example
             System.exit(2);
         }
 
-        final ParseNode node = listener.getRootNode();
+        final ParseNode node = listener.getTree();
 
         final Path svg = Paths.get("/tmp/ebnf.svg");
 

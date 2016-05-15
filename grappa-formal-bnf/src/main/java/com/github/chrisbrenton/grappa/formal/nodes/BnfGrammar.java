@@ -1,6 +1,8 @@
 package com.github.chrisbrenton.grappa.formal.nodes;
 
-import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
+
+import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
+import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,9 +11,10 @@ import java.util.stream.Collectors;
 public final class BnfGrammar
     extends ParseNode
 {
-    public BnfGrammar(final String value, final List<ParseNode> children)
+    public BnfGrammar(final MatchTextSupplier supplier,
+        final List<ParseNode> children)
     {
-        super(value, children);
+        super(supplier, children);
     }
 
     public Collection<BnfRule> getRules()

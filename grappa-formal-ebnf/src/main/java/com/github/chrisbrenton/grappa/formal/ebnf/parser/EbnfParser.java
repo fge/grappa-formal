@@ -8,7 +8,7 @@ import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfNonTerminal;
 import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfOptional;
 import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfProductionRule;
 import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfRepetition;
-import com.github.chrisbrenton.grappa.parsetree.annotations.GenerateNode;
+import com.github.chrisbrenton.grappa.parsetree.node.GenerateNode;
 import com.github.fge.grappa.parsers.BaseParser;
 import com.github.fge.grappa.rules.Rule;
 

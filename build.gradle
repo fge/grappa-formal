@@ -26,9 +26,9 @@ subprojects {
         compile(group: "com.github.fge", name: "grappa",
             version: "[2.1.,)");
         compile(group: "com.github.chrisbrenton", name: "grappa-parsetree",
-            version: "1.0.1");
+            version: "[1.1,)");
         compile(group: "com.github.fge", name: "grappa-parsetree-visual",
-            version: "1.0.1");
+            version: "[1.0.1,)");
         compile(group: "com.unquietcode.tools.jcodemodel", name: "codemodel",
             version: "1.0.3");
         testCompile(group: "org.testng", name: "testng", version: "6.9.10") {
@@ -41,7 +41,7 @@ subprojects {
         testCompile(group: "org.mockito", name: "mockito-core",
             version: "1.10.19");
         testCompile(group: "org.assertj", name: "assertj-core",
-            version: "3.3.0");
+            version: "[3.3.0,)");
     }
 
 /*

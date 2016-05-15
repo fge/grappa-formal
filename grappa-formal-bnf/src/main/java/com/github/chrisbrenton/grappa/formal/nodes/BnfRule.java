@@ -1,6 +1,8 @@
 package com.github.chrisbrenton.grappa.formal.nodes;
 
-import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
+
+import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
+import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 
 import java.util.List;
 
@@ -8,9 +10,9 @@ public final class BnfRule
     extends ParseNode
     implements FormalRule
 {
-    public BnfRule(final String value, final List<ParseNode> children)
+    public BnfRule(final MatchTextSupplier supplier, final List<ParseNode> children)
     {
-        super(value, children);
+        super(supplier, children);
     }
 
     @Override

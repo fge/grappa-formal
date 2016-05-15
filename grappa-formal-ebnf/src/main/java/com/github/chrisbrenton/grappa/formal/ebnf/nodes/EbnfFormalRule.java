@@ -2,7 +2,8 @@ package com.github.chrisbrenton.grappa.formal.ebnf.nodes;
 
 import com.github.chrisbrenton.grappa.formal.nodes.FormalRule;
 import com.github.chrisbrenton.grappa.formal.nodes.ProductionRule;
-import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
+import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
+import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 
 import java.util.List;
 
@@ -10,10 +11,10 @@ public final class EbnfFormalRule
     extends ParseNode
     implements FormalRule
 {
-    public EbnfFormalRule(final String matchedText,
+    public EbnfFormalRule(final MatchTextSupplier supplier,
         final List<ParseNode> children)
     {
-        super(matchedText, children);
+        super(supplier, children);
     }
 
     @Override

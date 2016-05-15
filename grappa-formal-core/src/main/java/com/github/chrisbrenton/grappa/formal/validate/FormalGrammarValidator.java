@@ -1,7 +1,7 @@
 package com.github.chrisbrenton.grappa.formal.validate;
 
 import com.github.chrisbrenton.grappa.formal.exceptions.FormalismException;
-import com.github.chrisbrenton.grappa.parsetree.visitors.Visitor;
+import com.github.chrisbrenton.grappa.parsetree.visit.Visitor;
 
 public interface FormalGrammarValidator
     extends Visitor

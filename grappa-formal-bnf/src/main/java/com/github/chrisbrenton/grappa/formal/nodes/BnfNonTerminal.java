@@ -2,7 +2,8 @@ package com.github.chrisbrenton.grappa.formal.nodes;
 
 import com.github.chrisbrenton.grappa.formal.ExpressionGenerator;
 import com.github.chrisbrenton.grappa.formal.RuleNameMangler;
-import com.github.chrisbrenton.grappa.parsetree.nodes.ParseNode;
+import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
+import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JInvocation;
 
@@ -12,9 +13,9 @@ public final class BnfNonTerminal
     extends ParseNode
     implements ExpressionGenerator, AlternationElement
 {
-    public BnfNonTerminal(final String value, final List<ParseNode> children)
+    public BnfNonTerminal(final MatchTextSupplier supplier, final List<ParseNode> children)
     {
-        super(value, children);
+        super(supplier, children);
     }
 
     @Override
