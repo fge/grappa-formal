@@ -1,11 +1,6 @@
 package com.github.chrisbrenton.grappa.formal.ebnf;
 
 import com.github.chrisbrenton.grappa.formal.ebnf.parser.EbnfParser;
-import com.github.chrisbrenton.grappa.formal.nodes.Alternation;
-import com.github.chrisbrenton.grappa.formal.nodes.AlternationElement;
-import com.github.chrisbrenton.grappa.formal.nodes.FormalGrammar;
-import com.github.chrisbrenton.grappa.formal.nodes.FormalRule;
-import com.github.chrisbrenton.grappa.formal.nodes.ProductionRule;
 import com.github.chrisbrenton.grappa.parsetree.build.ParseNodeConstructorProvider;
 import com.github.chrisbrenton.grappa.parsetree.build.ParseTreeBuilder;
 import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
@@ -24,7 +19,6 @@ import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 
 public final class Example
 {
@@ -71,17 +65,6 @@ public final class Example
         ) {
             generator.render(node);
         }
-
-        final FormalGrammar grammar = (FormalGrammar) node;
-
-        grammar.getFormalRules().stream()
-            .map(FormalRule::getProductionRule)
-            .map(ProductionRule::getAlternations)
-            .flatMap(Collection::stream)
-            .map(Alternation::getElements)
-            .flatMap(Collection::stream)
-            .map(AlternationElement::getValue)
-            .forEach(System.out::println);
     }
 
     private static String loadExample()

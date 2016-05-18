@@ -1,18 +1,17 @@
 package com.github.chrisbrenton.grappa.formal.nodes;
 
-import com.github.chrisbrenton.grappa.formal.ExpressionGenerator;
-import com.github.chrisbrenton.grappa.formal.RuleNameMangler;
+import com.github.chrisbrenton.grappa.formal.NameMangler;
 import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
 import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JInvocation;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class BnfProductionRule
-    extends ParseNode
-    implements ExpressionGenerator, ProductionRule
+    extends GrammarNode
 {
     public BnfProductionRule(final MatchTextSupplier supplier,
         final List<ParseNode> children)
@@ -20,32 +19,18 @@ public final class BnfProductionRule
         super(supplier, children);
     }
 
-    public List<BnfSequence> getSequences()
-    {
-        return getChildren().stream()
-            .map(BnfSequence.class::cast)
-            .collect(Collectors.toList());
-    }
-
     @Override
-    public List<Alternation> getAlternations()
+    public JExpression toExpression(final NameMangler mangler)
     {
-        return getChildren().stream()
-            .map(Alternation.class::cast)
+        final List<GrammarNode> sequences = childrenStream()
             .collect(Collectors.toList());
-    }
-
-    @Override
-    public JInvocation toInvocation(final RuleNameMangler mangler)
-    {
-        final List<BnfSequence> sequences = getSequences();
 
         if (sequences.size() == 1)
-            return sequences.get(0).toInvocation(mangler);
+            return sequences.get(0).toExpression(mangler);
 
         final JInvocation invocation = JExpr.invoke("firstOf");
 
-        sequences.stream().map(generator -> generator.toExpression(mangler))
+        sequences.stream().map(node -> node.toExpression(mangler))
             .forEach(invocation::arg);
 
         return invocation;

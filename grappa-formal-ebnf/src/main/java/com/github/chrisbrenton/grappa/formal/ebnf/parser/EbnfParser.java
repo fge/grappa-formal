@@ -4,7 +4,7 @@ import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfAlternation;
 import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfFormalRule;
 import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfGrammar;
 import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfLiteral;
-import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfNonTerminal;
+import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfRuleName;
 import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfOptional;
 import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfProductionRule;
 import com.github.chrisbrenton.grappa.formal.ebnf.nodes.EbnfRepetition;
@@ -48,7 +48,7 @@ public class EbnfParser
         return firstOf(doubleQuotedString(), singleQuotedString());
     }
 
-    @GenerateNode(EbnfNonTerminal.class)
+    @GenerateNode(EbnfRuleName.class)
     public Rule nonTerminal()
     {
         return join(oneOrMore(alpha()))

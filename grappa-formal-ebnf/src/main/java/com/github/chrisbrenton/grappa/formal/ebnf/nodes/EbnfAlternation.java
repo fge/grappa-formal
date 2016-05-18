@@ -1,24 +1,22 @@
 package com.github.chrisbrenton.grappa.formal.ebnf.nodes;
 
-import com.github.chrisbrenton.grappa.formal.nodes.Alternation;
-import com.github.chrisbrenton.grappa.formal.nodes.AlternationElement;
+import com.github.chrisbrenton.grappa.formal.NameMangler;
+import com.github.chrisbrenton.grappa.formal.nodes.GrammarNode;
 import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
 import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
+import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JExpression;
+import com.sun.codemodel.JInvocation;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public final class EbnfAlternation
-    extends ParseNode
-    implements Alternation
+    extends GrammarNode
 {
-    private final List<AlternationElement> elements = new ArrayList<>();
     public EbnfAlternation(final MatchTextSupplier supplier,
         final List<ParseNode> children)
     {
         super(supplier, children);
-        children.stream().forEach(this::fillElementList);
     }
 
     @Override
@@ -28,16 +26,13 @@ public final class EbnfAlternation
     }
 
     @Override
-    public List<AlternationElement> getElements()
+    public JExpression toExpression(final NameMangler mangler)
     {
-        return Collections.unmodifiableList(elements);
-    }
+        final JInvocation invocation = JExpr.invoke("firstOf");
 
-    private void fillElementList(final ParseNode node)
-    {
-        if (!node.hasChildren())
-            elements.add((AlternationElement) node);
-        else
-            node.getChildren().forEach(this::fillElementList);
+        childrenStream().map(element -> element.toExpression(mangler))
+            .forEach(invocation::arg);
+
+        return invocation;
     }
 }

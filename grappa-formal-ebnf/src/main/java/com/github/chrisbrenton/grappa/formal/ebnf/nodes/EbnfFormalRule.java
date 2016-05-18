@@ -1,7 +1,7 @@
 package com.github.chrisbrenton.grappa.formal.ebnf.nodes;
 
 import com.github.chrisbrenton.grappa.formal.nodes.FormalRule;
-import com.github.chrisbrenton.grappa.formal.nodes.ProductionRule;
+import com.github.chrisbrenton.grappa.formal.nodes.GrammarNode;
 import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
 import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 
@@ -30,8 +30,8 @@ public final class EbnfFormalRule
     }
 
     @Override
-    public ProductionRule getProductionRule()
+    public GrammarNode getProductionRule()
     {
-        return (ProductionRule) children.get(1);
+        return (GrammarNode) children.get(1);
     }
 }

@@ -10,7 +10,8 @@ public final class BnfRule
     extends ParseNode
     implements FormalRule
 {
-    public BnfRule(final MatchTextSupplier supplier, final List<ParseNode> children)
+    public BnfRule(final MatchTextSupplier supplier,
+        final List<ParseNode> children)
     {
         super(supplier, children);
     }
@@ -22,9 +23,9 @@ public final class BnfRule
     }
 
     @Override
-    public BnfProductionRule getProductionRule()
+    public GrammarNode getProductionRule()
     {
-        return BnfProductionRule.class.cast(getChildren().get(1));
+        return (GrammarNode) getChildren().get(1);
     }
 
     @Override

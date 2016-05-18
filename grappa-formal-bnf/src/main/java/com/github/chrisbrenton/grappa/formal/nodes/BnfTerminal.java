@@ -1,18 +1,15 @@
 package com.github.chrisbrenton.grappa.formal.nodes;
 
-import com.github.chrisbrenton.grappa.formal.ExpressionGenerator;
-import com.github.chrisbrenton.grappa.formal.RuleNameMangler;
+import com.github.chrisbrenton.grappa.formal.NameMangler;
 import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
 import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
 import com.sun.codemodel.JExpr;
 import com.sun.codemodel.JExpression;
-import com.sun.codemodel.JInvocation;
 
 import java.util.List;
 
 public final class BnfTerminal
-    extends ParseNode
-    implements ExpressionGenerator, AlternationElement
+    extends GrammarNode
 {
     private final String matchedText;
     public BnfTerminal(final MatchTextSupplier supplier, final List<ParseNode> children)
@@ -22,25 +19,11 @@ public final class BnfTerminal
     }
 
     @Override
-    public JExpression toExpression(final RuleNameMangler mangler)
+    public JExpression toExpression(final NameMangler mangler)
     {
         return matchedText.startsWith("'")
             ? JExpr.lit(unquoteChar(matchedText))
             : JExpr.lit(unquoteString(matchedText));
-    }
-
-    @Override
-    public JInvocation toInvocation(final RuleNameMangler mangler)
-    {
-        return matchedText.startsWith("'")
-            ? JExpr.invoke("ch").arg(JExpr.lit(unquoteChar(matchedText)))
-            : JExpr.invoke("string").arg(JExpr.lit(unquoteString(matchedText)));
-    }
-
-    @Override
-    public boolean isTerminal()
-    {
-        return true;
     }
 
     // Note: very dependent on the parsing

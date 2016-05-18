@@ -3,7 +3,7 @@ package com.github.chrisbrenton.grappa.formal;
 import java.util.HashSet;
 import java.util.Set;
 
-final class NameMangler
+public final class NameMangler
 {
     private final Set<String> generatedNames = new HashSet<>();
 

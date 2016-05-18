@@ -9,7 +9,8 @@ import java.util.List;
 public final class BnfRuleName
     extends ParseNode
 {
-    public BnfRuleName(final MatchTextSupplier supplier, final List<ParseNode> children)
+    public BnfRuleName(final MatchTextSupplier supplier,
+        final List<ParseNode> children)
     {
         super(supplier, children);
     }

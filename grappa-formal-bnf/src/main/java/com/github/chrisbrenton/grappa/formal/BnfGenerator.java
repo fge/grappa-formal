@@ -18,7 +18,7 @@ public final class BnfGenerator
     private final JCodeModel model = new JCodeModel();
     private final JDefinedClass definedClass;
 
-    private final RuleNameMangler mangler = new BnfRuleNameMangler();
+    private final NameMangler mangler = new NameMangler();
 
     public BnfGenerator()
     {
@@ -41,7 +41,7 @@ public final class BnfGenerator
     private void addRule(final BnfRule rule)
     {
         final String label = rule.getName();
-        final String methodName = mangler.fromRuleName(rule.getName());
+        final String methodName = mangler.toMethodName(rule.getName());
 
         final JMethod method = definedClass.method(JMod.PUBLIC, Rule.class,
             methodName);

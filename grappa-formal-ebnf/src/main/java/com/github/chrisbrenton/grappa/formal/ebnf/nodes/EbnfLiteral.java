@@ -1,14 +1,16 @@
 package com.github.chrisbrenton.grappa.formal.ebnf.nodes;
 
-import com.github.chrisbrenton.grappa.formal.nodes.AlternationElement;
+import com.github.chrisbrenton.grappa.formal.NameMangler;
+import com.github.chrisbrenton.grappa.formal.nodes.GrammarNode;
 import com.github.chrisbrenton.grappa.parsetree.node.MatchTextSupplier;
 import com.github.chrisbrenton.grappa.parsetree.node.ParseNode;
+import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JExpression;
 
 import java.util.List;
 
 public final class EbnfLiteral
-    extends ParseNode
-    implements AlternationElement
+    extends GrammarNode
 {
     public EbnfLiteral(final MatchTextSupplier supplier,
         final List<ParseNode> children)
@@ -17,8 +19,10 @@ public final class EbnfLiteral
     }
 
     @Override
-    public boolean isTerminal()
+    public JExpression toExpression(final NameMangler mangler)
     {
-        return true;
+        final String text = getMatchedText();
+        final String content = text.substring(1, text.length() - 1);
+        return JExpr.lit(content);
     }
 }

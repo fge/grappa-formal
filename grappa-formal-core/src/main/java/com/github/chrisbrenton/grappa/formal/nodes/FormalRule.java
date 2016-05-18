@@ -12,7 +12,6 @@ package com.github.chrisbrenton.grappa.formal.nodes;
  *
  * <p>This interface gives access to those two elements individually.</p>
  *
- * @see ProductionRule
  */
 public interface FormalRule
 {
@@ -28,5 +27,5 @@ public interface FormalRule
      *
      * @return the production rule
      */
-    ProductionRule getProductionRule();
+    GrammarNode getProductionRule();
 }
